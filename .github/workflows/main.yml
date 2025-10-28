@@ -27,7 +27,6 @@ jobs:
             -Dsonar.projectName=swiggy
             -Dsonar.sources=.
 
-
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
@@ -41,6 +40,21 @@ jobs:
           docker build -t swiggy-ecr -f deployment-using-github-actions/Dockerfile deployment-using-github-actions/
           docker tag swiggy-ecr:latest 832721971180.dkr.ecr.us-east-1.amazonaws.com/swiggy-ecr:latest
           docker push 832721971180.dkr.ecr.us-east-1.amazonaws.com/swiggy-ecr:latest
+
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: self-hosted
+
+    steps:
+      - name: Docker pull image
+        run: docker pull 832721971180.dkr.ecr.us-east-1.amazonaws.com/swiggy-ecr:latest
+
+      - name: Image scan
+        run: trivy image 832721971180.dkr.ecr.us-east-1.amazonaws.com/swiggy-ecr:latest > trivyimagedeploy.txt
+
+      - name: Deploy to container
+        run: docker run -d --name swiggy-clone -p 832721971180.dkr.ecr.us-east-1.amazonaws.com/swiggy-ecr:latest
 
       # Optional: Fail job if Quality Gate is red
       # - name: SonarQube Quality Gate Check
