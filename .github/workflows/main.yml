@@ -26,9 +26,9 @@ jobs:
 
           args: >
 
-            -Dsonar.projectKey=Swiggy
+            -Dsonar.projectKey=swiggy
 
-            -Dsonar.projectName=Swiggy
+            -Dsonar.projectName=swiggy
 
             -Dsonar.sources=.
  
