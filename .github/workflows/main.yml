@@ -38,7 +38,7 @@ jobs:
       - name: Docker build and push
         run: |
           aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 832721971180.dkr.ecr.us-east-1.amazonaws.com
-          docker build -t swiggy -f deployment-using-github-actions/Dockerfile deployment-using-github-actions/
+          docker build -t swiggy-ecr -f deployment-using-github-actions/Dockerfile deployment-using-github-actions/
           docker tag swiggy-ecr:latest 832721971180.dkr.ecr.us-east-1.amazonaws.com/swiggy-ecr:latest
           docker push 832721971180.dkr.ecr.us-east-1.amazonaws.com/swiggy-ecr:latest
 
