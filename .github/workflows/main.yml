@@ -65,7 +65,11 @@ jobs:
 
 
       - name: Update kubeconfig
-        run: aws eks --region us-east-1 update-kubeconfig --name EKS_CLOUD
+        run: |
+         mkdir -p $HOME/.kube
+         aws eks update-kubeconfig --region us-east-1 --name EKS_CLOUD --kubeconfig $HOME/.kube/config
+         export KUBECONFIG=$HOME/.kube/config
+
       - name: Deploy to kubernetes
         run: kubectl apply -f deployment-using-github-actions/deployment-service.yml --validate=false
 
