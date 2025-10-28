@@ -53,6 +53,12 @@ jobs:
       - name: Image scan
         run: trivy image 832721971180.dkr.ecr.us-east-1.amazonaws.com/swiggy-ecr:latest > trivyimagedeploy.txt
 
+      - name: Stop and remove existing container
+        run: |
+          docker stop swiggy-clone || true
+          docker rm swiggy-clone || true
+
+     
       - name: Deploy to container
         run: docker run -d --name swiggy-clone -p 3000:3000 832721971180.dkr.ecr.us-east-1.amazonaws.com/swiggy-ecr:latest
 
